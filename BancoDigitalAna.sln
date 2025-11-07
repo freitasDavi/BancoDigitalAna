@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36518.9 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancoDigitalAna.ContaCorrente", "BancoDigitalAna.ContaCorrente\BancoDigitalAna.ContaCorrente.csproj", "{3861D545-3943-4AC3-80A9-5D23C71F8532}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancoDigitalAna.BuildingBlocks", "BancoDigitalAna.BuildingBlocks\BancoDigitalAna.BuildingBlocks.csproj", "{4AC6F9E1-34D4-4F47-8689-4C557B0E7221}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancoDigitalAna.UnitTests", "BancoDigitalAna.UnitTests\BancoDigitalAna.UnitTests.csproj", "{20D1F264-4651-4DFD-9CFE-EDF952AF2B99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{3861D545-3943-4AC3-80A9-5D23C71F8532}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3861D545-3943-4AC3-80A9-5D23C71F8532}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3861D545-3943-4AC3-80A9-5D23C71F8532}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AC6F9E1-34D4-4F47-8689-4C557B0E7221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AC6F9E1-34D4-4F47-8689-4C557B0E7221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AC6F9E1-34D4-4F47-8689-4C557B0E7221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AC6F9E1-34D4-4F47-8689-4C557B0E7221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20D1F264-4651-4DFD-9CFE-EDF952AF2B99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20D1F264-4651-4DFD-9CFE-EDF952AF2B99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20D1F264-4651-4DFD-9CFE-EDF952AF2B99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20D1F264-4651-4DFD-9CFE-EDF952AF2B99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
