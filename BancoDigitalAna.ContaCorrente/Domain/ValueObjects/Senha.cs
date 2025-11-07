@@ -17,7 +17,7 @@ namespace BancoDigitalAna.ContaCorrente.Domain.ValueObjects
 
         public static Senha Criar(string senhaTexto)
         {
-            if (string.IsNullOrWhiteSpace(senhaTexto))
+            if (string.IsNullOrWhiteSpace(senhaTexto) || senhaTexto.Length < 6)
                 throw new DomainException("Senha deve ter no mínimo 6 caractéres", "INVALID_PASSWORD");
 
             var salt = GerarSalt();
