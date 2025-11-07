@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BancoDigitalAna.ContaCorrente.Domain.ValueObjects
+namespace BancoDigitalAna.Conta.Domain.ValueObjects
 {
     public class Senha
     {

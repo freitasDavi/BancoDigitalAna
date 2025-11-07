@@ -17,4 +17,8 @@
     <ProjectReference Include="..\BancoDigitalAna.BuildingBlocks\BancoDigitalAna.BuildingBlocks.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

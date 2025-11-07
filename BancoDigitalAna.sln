@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36518.9 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancoDigitalAna.ContaCorrente", "BancoDigitalAna.ContaCorrente\BancoDigitalAna.ContaCorrente.csproj", "{3861D545-3943-4AC3-80A9-5D23C71F8532}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancoDigitalAna.Conta", "BancoDigitalAna.ContaCorrente\BancoDigitalAna.Conta.csproj", "{3861D545-3943-4AC3-80A9-5D23C71F8532}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancoDigitalAna.BuildingBlocks", "BancoDigitalAna.BuildingBlocks\BancoDigitalAna.BuildingBlocks.csproj", "{4AC6F9E1-34D4-4F47-8689-4C557B0E7221}"
 EndProject

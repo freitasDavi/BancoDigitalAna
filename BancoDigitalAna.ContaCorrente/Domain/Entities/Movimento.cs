@@ -1,4 +1,4 @@
-﻿namespace BancoDigitalAna.ContaCorrente.Domain.Entities
+﻿namespace BancoDigitalAna.Conta.Domain.Entities
 {
     public class Movimento
     {

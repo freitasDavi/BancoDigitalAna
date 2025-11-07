@@ -1,8 +1,8 @@
 ﻿using BancoDigitalAna.BuildingBlocks.Domain.Exceptions;
-using BancoDigitalAna.ContaCorrente.Domain.ValueObjects;
+using BancoDigitalAna.Conta.Domain.ValueObjects;
 using FluentAssertions;
 
-namespace BancoDigitalAna.UnitTests.ContaCorrente
+namespace BancoDigitalAna.UnitTests.ContasCorrente
 {
 
     public class CpfTests

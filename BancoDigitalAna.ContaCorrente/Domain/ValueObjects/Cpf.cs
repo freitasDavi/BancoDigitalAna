@@ -1,7 +1,7 @@
 ﻿using BancoDigitalAna.BuildingBlocks.Domain.Exceptions;
 using System.Text.RegularExpressions;
 
-namespace BancoDigitalAna.ContaCorrente.Domain.ValueObjects
+namespace BancoDigitalAna.Conta.Domain.ValueObjects
 {
     public class Cpf
     {

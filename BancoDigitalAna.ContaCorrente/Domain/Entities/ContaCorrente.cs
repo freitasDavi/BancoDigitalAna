@@ -1,14 +1,42 @@
-﻿using BancoDigitalAna.ContaCorrente.Domain.ValueObjects;
+﻿using BancoDigitalAna.BuildingBlocks.Domain.Common;
+using BancoDigitalAna.Conta.Domain.Events;
+using BancoDigitalAna.Conta.Domain.ValueObjects;
 
-namespace BancoDigitalAna.ContaCorrente.Domain.Entities
+namespace BancoDigitalAna.Conta.Domain.Entities
 {
-    public class ContaCorrente
+    public class ContaCorrente : Entity
     {
-        public Guid Id { get; private set; }
         public Cpf Cpf { get; private set; }
-        public string Nome { get; private set; } = string.Empty;
+        public int NumeroConta { get; private set; }
+        public string NomeTitular { get; private set; }
         public bool Ativo {  get; private set; }
-        public string Senha { get; private set; }
-        public string Salt { get; private set; }
+        public Senha Senha { get; private set; }
+
+        private ContaCorrente() { }
+
+        private ContaCorrente(Cpf cpf, string nomeTitular, Senha senha)
+        {
+            Id = Guid.NewGuid();
+            Cpf = cpf;
+            NomeTitular = nomeTitular;
+            Senha = senha;
+            NumeroConta = GerarNumeroConta();
+            Ativo = true;
+
+            AdicionarEvento(new ContaCorrenteCriadaEvent(Id, NumeroConta, cpf));
+        }
+
+        public static ContaCorrente Criar(string cpf, string nomeTitular, string senha)
+        {
+            var cpfVO = Cpf.Criar(cpf);
+            var senhaVO = Senha.Criar(senha);
+
+            return new ContaCorrente(cpfVO, nomeTitular, senhaVO);
+        }
+
+        public int GerarNumeroConta()
+        {
+            return new Random().Next(10000000, 99999999);
+        }
     }
 }

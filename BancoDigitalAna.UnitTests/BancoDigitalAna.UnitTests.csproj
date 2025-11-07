@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BancoDigitalAna.ContaCorrente\BancoDigitalAna.ContaCorrente.csproj" />
+    <ProjectReference Include="..\BancoDigitalAna.ContaCorrente\BancoDigitalAna.Conta.csproj" />
   </ItemGroup>
 
   <ItemGroup>
