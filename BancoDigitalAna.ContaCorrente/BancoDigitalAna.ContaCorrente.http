@@ -1,0 +1,6 @@
+@BancoDigitalAna.ContaCorrente_HostAddress = http://localhost:5014
+
+GET {{BancoDigitalAna.ContaCorrente_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
