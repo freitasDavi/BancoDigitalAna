@@ -6,7 +6,7 @@ namespace BancoDigitalAna.UnitTests.ContaCorrente
 {
     public class SenhaTests
     {
-        [Fact]
+        [Theory]
         [InlineData("")]
         [InlineData(null)]
         [InlineData("  ")]
@@ -16,7 +16,7 @@ namespace BancoDigitalAna.UnitTests.ContaCorrente
             var act = () => Senha.Criar(senha);
 
             act.Should().Throw<DomainException>()
-                .WithMessage("Senha deve ter no mínimo 6 caracteres")
+                .WithMessage("Senha deve ter no mínimo 6 caractéres")
                 .Where(e => e.ErrorCode == "INVALID_PASSWORD");
         }
     }
