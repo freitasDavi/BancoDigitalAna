@@ -13,6 +13,9 @@ namespace BancoDigitalAna.Conta.Domain.Entities
         public bool Ativo {  get; private set; }
         public Senha Senha { get; private set; }
 
+        private readonly List<Movimento> _movimentos = new();
+        public IReadOnlyCollection<Movimento> Movimentos => _movimentos.AsReadOnly();
+
         private ContaCorrente() { }
 
         private ContaCorrente(Cpf cpf, string nomeTitular, Senha senha)
@@ -51,6 +54,23 @@ namespace BancoDigitalAna.Conta.Domain.Entities
         public int GerarNumeroConta()
         {
             return new Random().Next(10000000, 99999999);
+        }
+    
+        public void AdicionarMovimento(char tipo, decimal valor)
+        {
+            ValidarConta("receber movimentação");
+
+            if (valor <= 0)
+                throw new DomainException("Valor deve ser positivo", "INVALID_VALUE");
+
+            var movimento = Movimento.Criar(Id, tipo, valor);
+            _movimentos.Add(movimento);
+        }
+
+        private void ValidarConta (string operacao)
+        {
+            if (!Ativo)
+                throw new DomainException($"Conta inativa não pode {operacao}", "INACTIVE_ACCOUNT");
         }
     }
 }

@@ -64,6 +64,11 @@ namespace BancoDigitalAna.Conta.Infrastructure.Mappings
                 .HasMaxLength(255)
                 .IsRequired();
             });
+
+            builder.HasMany(c => c.Movimentos)
+                .WithOne()
+                .HasForeignKey(m => m.IdContaCorrente)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

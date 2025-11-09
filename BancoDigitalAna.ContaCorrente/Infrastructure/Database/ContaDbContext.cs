@@ -1,7 +1,6 @@
 ﻿using BancoDigitalAna.Conta.Domain.Entities;
 using BancoDigitalAna.Conta.Infrastructure.Mappings;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BancoDigitalAna.Conta.Infrastructure.Database
 {
@@ -12,11 +11,12 @@ namespace BancoDigitalAna.Conta.Infrastructure.Database
         }
 
         public DbSet<ContaCorrente> Contas { get; set; }
+        public DbSet<Movimento> Movimentos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ContaCorrenteMap());
-            //base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new MovimentoMap());
         }
     }
 }

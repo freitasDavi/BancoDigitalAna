@@ -35,5 +35,13 @@ namespace BancoDigitalAna.Conta.Infrastructure.Repositories
             _context.Update(conta);
             await _unitOfWork.CommitAsync();
         }
+
+        public async Task AtualizarAsync(ContaCorrente conta)
+        {
+            _context.Contas.Update(conta);
+
+            await _unitOfWork.CommitAsync();
+
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace BancoDigitalAna.Conta.Controllers.V1
     {
 
         [HttpPost]
-        public async Task<IActionResult> novaConta([FromBody] CriarContaCorrenteCommand command)
+        public async Task<IActionResult> NovaConta([FromBody] CriarContaCorrenteCommand command)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace BancoDigitalAna.Conta.Controllers.V1
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<LoginResponse>> login([FromBody] LoginCommand command)
+        public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginCommand command)
         {
             //try
             //{
@@ -51,11 +51,22 @@ namespace BancoDigitalAna.Conta.Controllers.V1
 
         [Authorize]
         [HttpPatch("inativar")]
-        public async Task<IActionResult> inativarConta([FromBody] InativarContaRequest request)
+        public async Task<IActionResult> InativarConta([FromBody] InativarContaRequest request)
         {
             var contaId = Guid.Parse(_loggedUser.ContaId);
 
             await _mediator.Send(new InativarContaCommand(contaId, request.Senha));
+
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpPost("movimento")]
+        public async Task<IActionResult> NovoMovimento([FromBody] NovoMovimentoRequest request)
+        {
+            var contaId = Guid.Parse(_loggedUser.ContaId);
+
+            await _mediator.Send(new NovaMovimentacaoContaCorrenteCommand(request.NumeroConta, request.Valor, request.Tipo, contaId));
 
             return NoContent();
         }

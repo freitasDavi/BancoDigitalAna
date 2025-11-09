@@ -10,5 +10,6 @@ namespace BancoDigitalAna.Conta.Domain.Repositories
         Task<ContaCorrente?> RecuperarPorCPF(string cpf);
         Task<ContaCorrente?> RecuperarPorNumeroConta(int numeroConta);
         Task InativarConta(ContaCorrente conta);
+        Task AtualizarAsync(ContaCorrente conta);
     }
 }
