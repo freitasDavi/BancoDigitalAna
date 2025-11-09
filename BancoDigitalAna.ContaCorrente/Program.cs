@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using BancoDigitalAna.BuildingBlocks.Infrastructure;
 using BancoDigitalAna.BuildingBlocks.Infrastructure.Auth;
 using BancoDigitalAna.Conta.Infrastructure.Database;
 using BancoDigitalAna.Conta.Infrastructure.Services;
@@ -46,6 +47,8 @@ builder.Services.AddDbContext<ContaDbContext>(options =>
     options.LogTo(Console.WriteLine, LogLevel.Information);
     //options.UseSqlite(builder.Configuration.GetConnectionString("default"));
 });
+
+builder.Services.AddExceptionHandler<BancoDigitalExceptionHandler>();
 
 var app = builder.Build();
 
