@@ -1,4 +1,5 @@
 ﻿using BancoDigitalAna.BuildingBlocks.Domain.Common;
+using BancoDigitalAna.BuildingBlocks.Domain.Exceptions;
 using BancoDigitalAna.Conta.Domain.Events;
 using BancoDigitalAna.Conta.Domain.ValueObjects;
 
@@ -32,6 +33,19 @@ namespace BancoDigitalAna.Conta.Domain.Entities
             var senhaVO = Senha.Criar(senha);
 
             return new ContaCorrente(cpfVO, nomeTitular, senhaVO);
+        }
+        
+        public void Inativar(string senhaInput)
+        {
+            if (!Ativo)
+                throw new DomainException("Conta já esta inativa", "INACTIVE_ACCOUNT");
+
+            if (!Senha.Validar(senhaInput))
+                throw new DomainException("Senha não inválida", "USER_UNAUTHORIZED");
+
+            Ativo = false;
+
+            //AdicionarEvento(new )
         }
 
         public int GerarNumeroConta()

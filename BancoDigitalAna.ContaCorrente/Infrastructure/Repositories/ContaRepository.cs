@@ -20,9 +20,20 @@ namespace BancoDigitalAna.Conta.Infrastructure.Repositories
             return await _context.Contas.Where(c => c.Cpf.Numero == cpf).FirstOrDefaultAsync();
         }
 
+        public async Task<ContaCorrente?> RecuperarPorId(Guid idConta)
+        {
+            return await _context.Contas.Where(c => c.Id == idConta).FirstOrDefaultAsync();
+        }
+
         public async Task<ContaCorrente?> RecuperarPorNumeroConta(int numeroConta)
         {
             return await _context.Contas.Where(c => c.NumeroConta == numeroConta).FirstOrDefaultAsync();
+        }
+
+        public async Task InativarConta(ContaCorrente conta)
+        {
+            _context.Update(conta);
+            await _unitOfWork.CommitAsync();
         }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using Asp.Versioning;
 using BancoDigitalAna.BuildingBlocks.Domain.Exceptions;
 using BancoDigitalAna.BuildingBlocks.DTOs;
+using BancoDigitalAna.BuildingBlocks.Infrastructure.Auth;
 using BancoDigitalAna.Conta.Application.Commands;
+using BancoDigitalAna.Conta.Application.DTOs;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BancoDigitalAna.Conta.Controllers.V1
@@ -10,7 +13,7 @@ namespace BancoDigitalAna.Conta.Controllers.V1
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
-    public class ContaController(IMediator mediator) : ControllerBase
+    public class ContaController(IMediator _mediator, ILoggedUser _loggedUser) : ControllerBase
     {
 
         [HttpPost]
@@ -18,7 +21,7 @@ namespace BancoDigitalAna.Conta.Controllers.V1
         {
             try
             {
-                var response = await mediator.Send(command);
+                var response = await _mediator.Send(command);
 
                 return Created($"{response.NumeroConta}", response);
             }
@@ -37,13 +40,24 @@ namespace BancoDigitalAna.Conta.Controllers.V1
         {
             //try
             //{
-                var response = await mediator.Send(command);
+                var response = await _mediator.Send(command);
 
                 return Ok(response);
             //} catch (Exception ex)
             //{
             //    return BadRequest(ex.Message);
             //}
+        }
+
+        [Authorize]
+        [HttpPatch("inativar")]
+        public async Task<IActionResult> inativarConta([FromBody] InativarContaRequest request)
+        {
+            var contaId = Guid.Parse(_loggedUser.ContaId);
+
+            await _mediator.Send(new InativarContaCommand(contaId, request.Senha));
+
+            return NoContent();
         }
     }
 }
