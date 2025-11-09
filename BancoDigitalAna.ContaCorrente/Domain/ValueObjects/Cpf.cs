@@ -7,6 +7,10 @@ namespace BancoDigitalAna.Conta.Domain.ValueObjects
     {
         public string Numero {  get; private set; }
 
+        protected Cpf ()
+        {
+        }
+
         private Cpf (String numero)
         {
             Numero = numero;

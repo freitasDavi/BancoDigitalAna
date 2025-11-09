@@ -9,6 +9,8 @@ namespace BancoDigitalAna.Conta.Domain.ValueObjects
         public string Hash { get; private set; }
         public string Salt { get; private set; }
 
+        public Senha () { }
+
         public Senha(string hash, string salt)
         {
             Hash = hash;
