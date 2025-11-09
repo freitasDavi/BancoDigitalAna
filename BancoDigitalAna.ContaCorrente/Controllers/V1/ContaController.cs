@@ -31,5 +31,19 @@ namespace BancoDigitalAna.Conta.Controllers.V1
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginResponse>> login([FromBody] LoginCommand command)
+        {
+            try
+            {
+                var response = await mediator.Send(command);
+
+                return Ok(response);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

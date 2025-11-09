@@ -49,5 +49,12 @@ namespace BancoDigitalAna.Conta.Domain.ValueObjects
 
             return Convert.ToBase64String(bytes);
         }
+    
+        public bool Validar (string senhaTexto)
+        {
+            var hashTest = GerarHash(senhaTexto, Salt);
+
+            return Hash == hashTest;
+        }
     }
 }
