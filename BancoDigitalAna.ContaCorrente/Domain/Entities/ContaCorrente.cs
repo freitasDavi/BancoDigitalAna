@@ -51,6 +51,11 @@ namespace BancoDigitalAna.Conta.Domain.Entities
             //AdicionarEvento(new )
         }
 
+        public void ContaEstaAtiva()
+        {
+            ValidarConta("ser alvos de consulta");
+        }
+
         public int GerarNumeroConta()
         {
             return new Random().Next(10000000, 99999999);
