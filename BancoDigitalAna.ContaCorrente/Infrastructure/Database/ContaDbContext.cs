@@ -12,11 +12,13 @@ namespace BancoDigitalAna.Conta.Infrastructure.Database
 
         public DbSet<ContaCorrente> Contas { get; set; }
         public DbSet<Movimento> Movimentos { get; set; }
+        public DbSet<Idempotencia> Idempotencias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ContaCorrenteMap());
             modelBuilder.ApplyConfiguration(new MovimentoMap());
+            modelBuilder.ApplyConfiguration(new IdempotenciaMap());
         }
     }
 }

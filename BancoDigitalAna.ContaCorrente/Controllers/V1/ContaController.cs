@@ -42,7 +42,7 @@ namespace BancoDigitalAna.Conta.Controllers.V1
         {
             var contaId = Guid.Parse(_loggedUser.ContaId);
 
-            await _mediator.Send(new InativarContaCommand(contaId, request.Senha));
+            await _mediator.Send(new InativarContaCommand(contaId, request.Senha, request.ChaveIdempotencia));
 
             return NoContent();
         }
@@ -53,7 +53,7 @@ namespace BancoDigitalAna.Conta.Controllers.V1
         {
             var contaId = Guid.Parse(_loggedUser.ContaId);
 
-            await _mediator.Send(new NovaMovimentacaoContaCorrenteCommand(request.NumeroConta, request.Valor, request.Tipo, contaId));
+            await _mediator.Send(new NovaMovimentacaoContaCorrenteCommand(request.NumeroConta, request.Valor, request.Tipo, contaId, request.ChaveIdempotencia));
 
             return NoContent();
         }

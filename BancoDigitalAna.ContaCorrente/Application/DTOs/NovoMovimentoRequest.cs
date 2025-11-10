@@ -2,7 +2,7 @@
 
 namespace BancoDigitalAna.Conta.Application.DTOs
 {
-    public record NovoMovimentoRequest (string? NumeroConta, decimal Valor, char Tipo)
+    public record NovoMovimentoRequest (string? NumeroConta, decimal Valor, char Tipo, Guid ChaveIdempotencia)
     {
     }
 }

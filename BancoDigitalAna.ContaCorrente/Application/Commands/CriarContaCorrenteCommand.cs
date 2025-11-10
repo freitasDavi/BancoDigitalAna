@@ -2,8 +2,8 @@
 
 namespace BancoDigitalAna.Conta.Application.Commands
 {
-    public record CriarContaCorrenteCommand (string Cpf, string NomeTitular, string Senha) 
-        : ICommand<CriarContaCorrenteResponse>;
+    public record CriarContaCorrenteCommand (string Cpf, string NomeTitular, string Senha, Guid ChaveIdempotencia) 
+        : ICommand<CriarContaCorrenteResponse?>;
 
     public record CriarContaCorrenteResponse (string NumeroConta)
     {

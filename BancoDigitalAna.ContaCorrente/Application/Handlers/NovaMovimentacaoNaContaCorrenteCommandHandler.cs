@@ -1,34 +1,45 @@
 ﻿using BancoDigitalAna.BuildingBlocks.CQRS;
 using BancoDigitalAna.BuildingBlocks.Infrastructure.Auth.Exceptions;
 using BancoDigitalAna.Conta.Application.Commands;
+using BancoDigitalAna.Conta.Application.Services;
 using BancoDigitalAna.Conta.Domain.Entities;
 using BancoDigitalAna.Conta.Domain.Repositories;
 using MediatR;
 
 namespace BancoDigitalAna.Conta.Application.Handlers
 {
-    public class NovaMovimentacaoNaContaCorrenteCommandHandler(IContaRepository _repository) : ICommandHandler<NovaMovimentacaoContaCorrenteCommand>
+    public class NovaMovimentacaoNaContaCorrenteCommandHandler(IContaRepository _repository, IIdempotenciaService idempotenciaService) : ICommandHandler<NovaMovimentacaoContaCorrenteCommand>
     {
         public async Task<Unit> Handle(NovaMovimentacaoContaCorrenteCommand request, CancellationToken cancellationToken)
         {
-            ContaCorrente? conta;
-
-            if (!string.IsNullOrEmpty(request.NumeroConta))
+            return await idempotenciaService.ExecutarComIdempotenciaAsync(request.ChaveIdempotencia, new
             {
-                conta = await _repository.RecuperarPorNumeroConta(int.Parse(request.NumeroConta));
-            } else
+                request.Valor,
+                request.Tipo,
+                request.NumeroConta,
+                request.IdConta,
+            }, async () =>
             {
-                conta = await _repository.RecuperarPorId((Guid)request.IdConta);
-            }
+                ContaCorrente? conta;
 
-            if (conta == null)
-                throw new UnauthorizedException("Usuario problematico");
+                if (!string.IsNullOrEmpty(request.NumeroConta))
+                {
+                    conta = await _repository.RecuperarPorNumeroConta(int.Parse(request.NumeroConta));
+                }
+                else
+                {
+                    conta = await _repository.RecuperarPorId((Guid)request.IdConta);
+                }
 
-            conta.AdicionarMovimento(request.Tipo, request.Valor, conta.NumeroConta.ToString());
+                if (conta == null)
+                    throw new UnauthorizedException("Usuario problematico");
 
-            await _repository.AtualizarAsync(conta);
+                conta.AdicionarMovimento(request.Tipo, request.Valor, conta.NumeroConta.ToString());
 
-            return Unit.Value;
+                await _repository.AtualizarAsync(conta);
+
+                return Unit.Value;
+            });
         }
     }
 }

@@ -27,7 +27,7 @@ namespace BancoDigitalAna.Conta.Application.Handlers
                 using var scope = _serviceProvider.CreateScope();
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-                var command = new NovaMovimentacaoContaCorrenteCommand(null, message.ValorTarifado, 'D', message.ContaCorrenteId);
+                var command = new NovaMovimentacaoContaCorrenteCommand(null, message.ValorTarifado, 'D', message.ContaCorrenteId, Guid.NewGuid());
 
                 await mediator.Send(command);
 

@@ -2,7 +2,7 @@
 
 namespace BancoDigitalAna.Conta.Application.Commands
 {
-    public record InativarContaCommand(Guid IdConta,string Senha) : ICommand
+    public record InativarContaCommand(Guid IdConta,string Senha, Guid ChaveIdempotencia) : ICommand
     {
     }
 }
