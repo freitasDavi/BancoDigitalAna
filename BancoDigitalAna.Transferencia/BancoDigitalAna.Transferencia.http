@@ -1,0 +1,6 @@
+@BancoDigitalAna.Transferencia_HostAddress = http://localhost:5019
+
+GET {{BancoDigitalAna.Transferencia_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

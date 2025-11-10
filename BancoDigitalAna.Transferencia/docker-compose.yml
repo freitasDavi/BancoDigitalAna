@@ -1,0 +1,13 @@
+services:
+  transferencias-db:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: transferencias-db
+    environment:
+      - ORACLE_PASSWORD=oracle
+    ports:
+      - "1522:1521"
+    volumes:
+      - transferencias-data:/opt/oracle/oradata
+
+volumes:
+  transferencias-data:

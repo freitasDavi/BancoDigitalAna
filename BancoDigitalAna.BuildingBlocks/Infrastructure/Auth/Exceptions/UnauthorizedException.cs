@@ -1,8 +1,12 @@
-﻿namespace BancoDigitalAna.BuildingBlocks.Infrastructure.Auth.Exceptions
+﻿using BancoDigitalAna.BuildingBlocks.Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Http;
+
+namespace BancoDigitalAna.BuildingBlocks.Infrastructure.Auth.Exceptions
 {
-    public class UnauthorizedException : Exception
+    public class UnauthorizedException : BaseException
     {
-        public string ErrorCode { get; private set; } = "USER_UNAUTHORIZED";
+        public new string ErrorCode { get; private set; } = "USER_UNAUTHORIZED";
+        public new int StatusCode { get; private set; } = StatusCodes.Status403Forbidden;
 
         public UnauthorizedException(string message) : base(message)
         {
