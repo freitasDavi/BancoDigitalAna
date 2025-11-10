@@ -47,7 +47,7 @@ namespace BancoDigitalAna.BuildingBlocks.Infrastructure.Auth
                     OnChallenge = context =>
                     {
                         context.HandleResponse();
-                        context.Response.StatusCode = 401;
+                        context.Response.StatusCode = 403;
                         context.Response.ContentType = "application/json";
 
                         var result = System.Text.Json.JsonSerializer.Serialize(new

@@ -56,8 +56,12 @@ namespace BancoDigitalAna.Conta.Domain.Entities
             return new Random().Next(10000000, 99999999);
         }
     
-        public void AdicionarMovimento(char tipo, decimal valor)
+        public void AdicionarMovimento(char tipo, decimal valor,string? numeroConta)
         {
+            if (!string.IsNullOrEmpty(numeroConta) &&
+                (int.Parse(numeroConta) != NumeroConta && tipo == 'D'))
+                throw new DomainException("Caso a conta destino seja diferente da origem, o tipo deve ser Crédito", "INVALID_TYPE");
+
             ValidarConta("receber movimentação");
 
             if (valor <= 0)
@@ -70,7 +74,26 @@ namespace BancoDigitalAna.Conta.Domain.Entities
         private void ValidarConta (string operacao)
         {
             if (!Ativo)
-                throw new DomainException($"Conta inativa não pode {operacao}", "INACTIVE_ACCOUNT");
+                throw new DomainException($"Contas inativas não podem {operacao}", "INACTIVE_ACCOUNT");
+        }
+
+        public decimal ConsultarSaldo()
+        {
+            ValidarConta("consultar saldo");
+
+            decimal saldo = 0;
+            _movimentos.ForEach((m) =>
+            {
+                if (m.TipoMovimento.Codigo == 'C')
+                {
+                    saldo += m.Valor;
+                } else
+                {
+                    saldo -= m.Valor;
+                }
+            });
+
+            return saldo;
         }
     }
 }

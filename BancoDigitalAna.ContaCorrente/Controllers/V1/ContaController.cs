@@ -4,6 +4,7 @@ using BancoDigitalAna.BuildingBlocks.DTOs;
 using BancoDigitalAna.BuildingBlocks.Infrastructure.Auth;
 using BancoDigitalAna.Conta.Application.Commands;
 using BancoDigitalAna.Conta.Application.DTOs;
+using BancoDigitalAna.Conta.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -69,6 +70,17 @@ namespace BancoDigitalAna.Conta.Controllers.V1
             await _mediator.Send(new NovaMovimentacaoContaCorrenteCommand(request.NumeroConta, request.Valor, request.Tipo, contaId));
 
             return NoContent();
+        }
+
+        [Authorize]
+        [HttpGet("consulta")]
+        public async Task<ActionResult<ConsultaSaldoResponse>> ConsultaSaldo()
+        {
+            var contaId = Guid.Parse(_loggedUser.ContaId);
+
+            var response = await _mediator.Send(new ConsultaSaldoQuery(contaId));
+
+            return Ok(response);
         }
     }
 }

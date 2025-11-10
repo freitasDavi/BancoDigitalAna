@@ -24,7 +24,7 @@ namespace BancoDigitalAna.Conta.Application.Handlers
             if (conta == null)
                 throw new UnauthorizedException("Usuario problematico");
 
-            conta.AdicionarMovimento(request.Tipo, request.Valor);
+            conta.AdicionarMovimento(request.Tipo, request.Valor, conta.NumeroConta.ToString());
 
             await _repository.AtualizarAsync(conta);
 

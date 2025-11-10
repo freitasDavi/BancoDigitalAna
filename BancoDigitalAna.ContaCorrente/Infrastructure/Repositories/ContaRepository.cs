@@ -22,7 +22,10 @@ namespace BancoDigitalAna.Conta.Infrastructure.Repositories
 
         public async Task<ContaCorrente?> RecuperarPorId(Guid idConta)
         {
-            return await _context.Contas.Where(c => c.Id == idConta).FirstOrDefaultAsync();
+            return await _context.Contas
+                .Where(c => c.Id == idConta)
+                .Include(c => c.Movimentos)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<ContaCorrente?> RecuperarPorNumeroConta(int numeroConta)
