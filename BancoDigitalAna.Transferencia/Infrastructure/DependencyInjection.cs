@@ -2,6 +2,7 @@
 using BancoDigitalAna.BuildingBlocks.Infrastructure.Http;
 using BancoDigitalAna.Transferencia.Domain.Repositories;
 using BancoDigitalAna.Transferencia.Infrastructure.ApiClient;
+using BancoDigitalAna.Transferencia.Infrastructure.Producers;
 using BancoDigitalAna.Transferencia.Infrastructure.Repositories;
 
 namespace BancoDigitalAna.Transferencia.Infrastructure
@@ -19,6 +20,7 @@ namespace BancoDigitalAna.Transferencia.Infrastructure
             services.AddScoped<IIdempotenciaRepository, IdempotenciaRepository>();
             services.AddScoped<IAuthenticatedHttpClient, AuthenticatedHttpClient>();
             services.AddScoped<IContaCorrenteApiClient, ContaCorrenteApiClient>();
+            services.AddScoped<ITransferenciaProducer, TransferenciaProducer>();
             
             return services;
         }

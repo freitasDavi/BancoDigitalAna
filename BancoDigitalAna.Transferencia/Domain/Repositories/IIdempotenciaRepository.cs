@@ -2,7 +2,7 @@
 {
     public interface IIdempotenciaRepository
     {
-        Task<string?> RecuperarIdempotencia(string chaveIdempotencia);
-        Task SalvarAsync(string chaveIdempotencia, string requisicao, string resultado);
+        Task<string?> RecuperarIdempotencia(Guid chaveIdempotencia);
+        Task SalvarAsync(Guid chaveIdempotencia, string requisicao, string resultado);
     }
 }

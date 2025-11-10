@@ -1,6 +1,8 @@
 using BancoDigitalAna.BuildingBlocks.Infrastructure.Auth;
 using BancoDigitalAna.BuildingBlocks.Middlewares;
 using BancoDigitalAna.Transferencia.Infrastructure;
+using KafkaFlow;
+using KafkaFlow.Serializer;
 
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
@@ -13,6 +15,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
+
+builder.Services.AddKafka(kafka => kafka
+    .UseConsoleLog()
+    .AddCluster(cluster => cluster
+        .WithBrokers(new[] { builder.Configuration["Kafka:BootstrapServers"]! })
+        .AddProducer("transferencia-producer", producer => producer
+            .DefaultTopic("transferencias-realizadas")
+            .AddMiddlewares(middlewares => middlewares
+                .AddSerializer<JsonCoreSerializer>()
+            )
+        )
+    )
+);
 
 DependencyInjection.AddCoreServices(builder.Services);
 
@@ -40,4 +55,9 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
+var kafkaBus = app.Services.CreateKafkaBus();
+
+
 app.Run();
+
+await kafkaBus.StopAsync();

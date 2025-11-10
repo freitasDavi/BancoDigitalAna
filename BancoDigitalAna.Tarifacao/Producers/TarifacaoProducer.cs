@@ -1,11 +1,6 @@
 ﻿using BancoDigitalAna.Tarifacao.Messages;
 using KafkaFlow.Producers;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BancoDigitalAna.Tarifacao.Producers
 {

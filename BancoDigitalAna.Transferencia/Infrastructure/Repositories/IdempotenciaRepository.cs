@@ -18,7 +18,7 @@ namespace BancoDigitalAna.Transferencia.Infrastructure.Repositories
             return new OracleConnection(_connectionString);            
         }
 
-        public async Task<string?> RecuperarIdempotencia(string chaveIdempotencia)
+        public async Task<string?> RecuperarIdempotencia(Guid chaveIdempotencia)
         {
             using var connection = CreateConnetion();
 
@@ -30,10 +30,10 @@ namespace BancoDigitalAna.Transferencia.Infrastructure.Repositories
 
             return await connection.QueryFirstOrDefaultAsync<string>(
                 sql,
-                new { ChaveIdempotencia = chaveIdempotencia });
+                new { ChaveIdempotencia = chaveIdempotencia.ToString() });
         }
 
-        public async Task SalvarAsync(string chaveIdempotencia, string requisicao, string resultado)
+        public async Task SalvarAsync(Guid chaveIdempotencia, string requisicao, string resultado)
         {
             using var connection = CreateConnetion();
 
@@ -51,7 +51,7 @@ namespace BancoDigitalAna.Transferencia.Infrastructure.Repositories
 
             await connection.ExecuteAsync(sql, new
             {
-                ChaveIdempotencia = chaveIdempotencia,
+                ChaveIdempotencia = chaveIdempotencia.ToString(),
                 Requisicao = requisicao,
                 Resultado = resultado
             });

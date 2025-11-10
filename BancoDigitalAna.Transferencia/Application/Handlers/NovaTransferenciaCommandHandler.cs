@@ -1,9 +1,11 @@
 ﻿using BancoDigitalAna.BuildingBlocks.CQRS;
+using BancoDigitalAna.BuildingBlocks.Kafka;
 using BancoDigitalAna.Transferencia.Application.Commands;
 using BancoDigitalAna.Transferencia.Application.DTOs;
 using BancoDigitalAna.Transferencia.Domain.Entities;
 using BancoDigitalAna.Transferencia.Domain.Repositories;
 using BancoDigitalAna.Transferencia.Infrastructure.ApiClient;
+using BancoDigitalAna.Transferencia.Infrastructure.Producers;
 using MediatR;
 using System.Text.Json;
 
@@ -13,7 +15,8 @@ namespace BancoDigitalAna.Transferencia.Application.Handlers
         ITransferenciaRepository _transferenciaRepository,
         IIdempotenciaRepository _idempotenciaRepository,
         IContaCorrenteApiClient _apiClient,
-        ILogger<NovaTransferenciaCommandHandler> _logger
+        ILogger<NovaTransferenciaCommandHandler> _logger,
+        ITransferenciaProducer _transferenciaProducer
         
         ) : ICommandHandler<NovaTransferenciaCommand, TransferenciaResponse>
     {
@@ -30,7 +33,7 @@ namespace BancoDigitalAna.Transferencia.Application.Handlers
             {
                 _logger.LogInformation($"[INFO]: Requisição idempotente ja realizada: {request.ChaveIdempotencia}");
 
-                return new TransferenciaResponse(request.ChaveIdempotencia, "Transferência já realizada");
+                return new TransferenciaResponse(request.ChaveIdempotencia.ToString(), "Transferência já realizada");
             }
 
             var contaDestino = await _apiClient.ConsultaContaPorNumero(request.ContaDestinoNumero);
@@ -72,6 +75,12 @@ namespace BancoDigitalAna.Transferencia.Application.Handlers
                 var resultadoJson = JsonSerializer.Serialize(response);
 
                 _logger.LogInformation($"[INFO]: Transferência {transferencia.Id.ToString()} realizada com sucesso");
+
+                await _transferenciaProducer.PublicarTransferenciaRealizada(
+                    new TransferenciaRealizadaMessage(request.ChaveIdempotencia, request.ContaOrigemId, request.Valor, DataHora: DateTime.UtcNow
+                ));
+
+                _logger.LogInformation($"[INFO]: Evento de transferência publicado no Kafka para {request.ChaveIdempotencia}");
 
                 return response;
             } catch (RequestContaCorrentException ex)
