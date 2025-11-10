@@ -21,34 +21,19 @@ namespace BancoDigitalAna.Conta.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> NovaConta([FromBody] CriarContaCorrenteCommand command)
         {
-            try
-            {
-                var response = await _mediator.Send(command);
+            
+            var response = await _mediator.Send(command);
 
-                return Created($"{response.NumeroConta}", response);
-            }
-            catch (DomainException ex)
-            {
-                return BadRequest(new BadRequestResponse(ex.Message, ex.ErrorCode));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Created($"{response.NumeroConta}", response);
+            
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginCommand command)
         {
-            //try
-            //{
-                var response = await _mediator.Send(command);
+            var response = await _mediator.Send(command);
 
-                return Ok(response);
-            //} catch (Exception ex)
-            //{
-            //    return BadRequest(ex.Message);
-            //}
+            return Ok(response);
         }
 
         [Authorize]

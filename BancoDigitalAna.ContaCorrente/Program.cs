@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using BancoDigitalAna.BuildingBlocks.Infrastructure;
 using BancoDigitalAna.BuildingBlocks.Infrastructure.Auth;
+using BancoDigitalAna.BuildingBlocks.Middlewares;
 using BancoDigitalAna.Conta.Infrastructure.Database;
 using BancoDigitalAna.Conta.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -48,8 +49,6 @@ builder.Services.AddDbContext<ContaDbContext>(options =>
     //options.UseSqlite(builder.Configuration.GetConnectionString("default"));
 });
 
-builder.Services.AddExceptionHandler<BancoDigitalExceptionHandler>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,6 +62,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

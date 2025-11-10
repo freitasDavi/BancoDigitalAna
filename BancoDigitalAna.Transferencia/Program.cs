@@ -1,4 +1,5 @@
 using BancoDigitalAna.BuildingBlocks.Infrastructure.Auth;
+using BancoDigitalAna.BuildingBlocks.Middlewares;
 using BancoDigitalAna.Transferencia.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
