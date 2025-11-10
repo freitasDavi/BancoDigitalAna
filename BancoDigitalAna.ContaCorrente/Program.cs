@@ -15,17 +15,34 @@ var assembly = typeof(Program).Assembly;
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Banco Digital da Ana - Conta Corrente",
+        Description = "Api para criação de contas e movimentação de dinheiro do Banco Digital da Ana",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Davi Freitas da Silva",
+            Url = new Uri("https://linkedin.com/in/freitasDavi")
+        }
+    });
+});
 
+// Adicionando Autenticação
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
+// Adicionando Serviços base
 DependencyInjection.AddCoreServices(builder.Services);
 
+// Adicionando Mediator
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
 });
 
+// Adicionando Versionamento da Api
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new ApiVersion(1, 0);
@@ -33,6 +50,7 @@ builder.Services.AddApiVersioning(options =>
     options.ReportApiVersions = true; 
 });
 
+// Adicionando Kafka
 builder.Services.AddKafka(kafka => kafka
     .UseConsoleLog()
     .AddCluster(cluster => cluster
@@ -59,14 +77,12 @@ var user = Environment.GetEnvironmentVariable("ORACLE_USER") ?? builder.Configur
 var password = Environment.GetEnvironmentVariable("ORACLE_PASSWORD") ?? builder.Configuration.GetValue<string>("ORACLE_PASSWORD");
 var service = Environment.GetEnvironmentVariable("ORACLE_SERVICE") ?? builder.Configuration.GetValue<string>("ORACLE_SERVICE");
 
-
+// Conexão com o banco de dados
 builder.Services.AddDbContext<ContaDbContext>(options =>
 {
-    var connectionString2 = $"User Id={user};Password={password};Data Source={host}:{port}/{service}";
-    options.UseOracle(connectionString2);
-    options.EnableSensitiveDataLogging();
+    var connectionString = $"User Id={user};Password={password};Data Source={host}:{port}/{service}";
+    options.UseOracle(connectionString);
     options.LogTo(Console.WriteLine, LogLevel.Information);
-    //options.UseSqlite(builder.Configuration.GetConnectionString("default"));
 });
 
 var app = builder.Build();

@@ -13,7 +13,20 @@ var assembly = typeof(Program).Assembly;
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Banco Digital da Ana - Transferência",
+        Description = "Api para transferência de dinheiro entre contas no Banco Digital da Ana",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Davi Freitas da Silva",
+            Url = new Uri("https://linkedin.com/in/freitasDavi")
+        }
+    });
+});
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
