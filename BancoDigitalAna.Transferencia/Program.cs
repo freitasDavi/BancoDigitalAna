@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using BancoDigitalAna.BuildingBlocks.Infrastructure.Auth;
 using BancoDigitalAna.BuildingBlocks.Middlewares;
 using BancoDigitalAna.Transferencia.Infrastructure;
@@ -15,6 +16,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+});
 
 builder.Services.AddKafka(kafka => kafka
     .UseConsoleLog()

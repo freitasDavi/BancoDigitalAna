@@ -24,7 +24,6 @@ DependencyInjection.AddCoreServices(builder.Services);
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
-    //config.AddOpenBehavior(typeof());
 });
 
 builder.Services.AddApiVersioning(options =>

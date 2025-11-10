@@ -1,6 +1,4 @@
 ﻿using Asp.Versioning;
-using BancoDigitalAna.BuildingBlocks.Domain.Exceptions;
-using BancoDigitalAna.BuildingBlocks.DTOs;
 using BancoDigitalAna.BuildingBlocks.Infrastructure.Auth;
 using BancoDigitalAna.Conta.Application.Commands;
 using BancoDigitalAna.Conta.Application.DTOs;
