@@ -78,8 +78,11 @@ namespace BancoDigitalAna.Transferencia.Application.Handlers
             {
                 _logger.LogError($"[ERROR]: Erro ao realizar transferências, o estorno será realizado");
 
-                if (debitoRealizado && !creditoRealizado)
-                    await RealizaEstorno(request.Valor);
+                if (creditoRealizado)
+                    await RealizaEstorno(contaDestino.IdConta, request.Valor, 'D');
+
+                if (debitoRealizado)
+                    await RealizaEstorno(request.ContaOrigemId, request.Valor, 'C');
 
                 throw;
             } catch (Exception ex)
@@ -91,10 +94,11 @@ namespace BancoDigitalAna.Transferencia.Application.Handlers
 
         }
 
-        private async Task RealizaEstorno(decimal valor)
+        private async Task RealizaEstorno(Guid idConta, decimal valor, char tipoEstorno)
         {
             try
             {
+                await _apiClient.RealizarMovimentoAsync(new NovoMovimentoRequest(idConta, valor, tipoEstorno));
 
                 _logger.LogInformation("Estorno realizado com sucesso");
             } catch (Exception ex)
