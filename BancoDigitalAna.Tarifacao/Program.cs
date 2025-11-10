@@ -18,7 +18,6 @@ class Program
                 services.AddScoped<ITarifacaoRepository, TarifacaoRepository>();
 
                 var kafkaBootstrap = context.Configuration["Kafka:BootstrapServers"];
-                Console.WriteLine(kafkaBootstrap);
 
                 services.AddKafka(kafka => kafka
                     .UseConsoleLog()
