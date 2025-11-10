@@ -13,11 +13,17 @@
     <PackageReference Include="KafkaFlow.LogHandler.Console" Version="4.0.1" />
     <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="4.0.1" />
     <PackageReference Include="KafkaFlow.Serializer.JsonCore" Version="4.0.1" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="23.26.0" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BancoDigitalAna.BuildingBlocks\BancoDigitalAna.BuildingBlocks.csproj" />
   </ItemGroup>
+
+    <ItemGroup>
+		<None Update="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

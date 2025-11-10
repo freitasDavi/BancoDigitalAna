@@ -1,4 +1,4 @@
-﻿using BancoDigitalAna.Tarifacao.Messages;
+﻿using BancoDigitalAna.BuildingBlocks.Kafka;
 using KafkaFlow.Producers;
 using Microsoft.Extensions.Logging;
 
@@ -20,7 +20,7 @@ namespace BancoDigitalAna.Tarifacao.Producers
             var producer = _producerAccessor.GetProducer("tarifacao-producer");
 
             await producer.ProduceAsync(
-                message.ContaCorrenteId,
+                message.ContaCorrenteId.ToString(),
                 message
                 );
 

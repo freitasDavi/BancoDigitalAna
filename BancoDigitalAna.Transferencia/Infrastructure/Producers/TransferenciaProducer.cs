@@ -18,7 +18,7 @@ namespace BancoDigitalAna.Transferencia.Infrastructure.Producers
             var producer = _producerAccessor.GetProducer("transferencia-producer");
 
             await producer.ProduceAsync(
-                    message.IdRequisicao,
+                    message.IdRequisicao.ToString(),
                     message
                 );
 

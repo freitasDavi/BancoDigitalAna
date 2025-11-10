@@ -57,6 +57,7 @@ app.MapControllers();
 
 var kafkaBus = app.Services.CreateKafkaBus();
 
+await kafkaBus.StartAsync();
 
 app.Run();
 

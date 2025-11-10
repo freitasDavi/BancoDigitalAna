@@ -1,7 +1,6 @@
 ﻿using BancoDigitalAna.BuildingBlocks.Kafka;
 using BancoDigitalAna.Tarifacao.Domain.Entities;
 using BancoDigitalAna.Tarifacao.Domain.Repositories;
-using BancoDigitalAna.Tarifacao.Messages;
 using BancoDigitalAna.Tarifacao.Producers;
 using KafkaFlow;
 using Microsoft.Extensions.Configuration;

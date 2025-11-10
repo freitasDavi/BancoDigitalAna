@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using BancoDigitalAna.Tarifacao.Handlers;
 using KafkaFlow;
 using KafkaFlow.Serializer;
+using BancoDigitalAna.Tarifacao.Producers;
 class Program
 {
     static async Task Main(string[] args)
@@ -13,12 +14,16 @@ class Program
         using IHost host = Host.CreateDefaultBuilder(args)
             .ConfigureServices((context, services) =>
             {
+                services.AddScoped<ITarifacaoProducer, TarifacaoProducer>();
                 services.AddScoped<ITarifacaoRepository, TarifacaoRepository>();
+
+                var kafkaBootstrap = context.Configuration["Kafka:BootstrapServers"];
+                Console.WriteLine(kafkaBootstrap);
 
                 services.AddKafka(kafka => kafka
                     .UseConsoleLog()
                     .AddCluster(cluster => cluster
-                        .WithBrokers(new[] { context.Configuration["Kafka:BootstrapServers"]! })
+                        .WithBrokers(new[] { kafkaBootstrap! })
                         .AddConsumer(consumer => consumer
                             .Topic("transferencias-realizadas")
                             .WithGroupId("tarifa-service-group")

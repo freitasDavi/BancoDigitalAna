@@ -1,9 +1,10 @@
 using Asp.Versioning;
-using BancoDigitalAna.BuildingBlocks.Infrastructure;
 using BancoDigitalAna.BuildingBlocks.Infrastructure.Auth;
 using BancoDigitalAna.BuildingBlocks.Middlewares;
+using BancoDigitalAna.Conta.Application.Handlers;
 using BancoDigitalAna.Conta.Infrastructure.Database;
 using BancoDigitalAna.Conta.Infrastructure.Services;
+using KafkaFlow;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,26 @@ builder.Services.AddApiVersioning(options =>
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.ReportApiVersions = true; 
 });
+
+builder.Services.AddKafka(kafka => kafka
+    .UseConsoleLog()
+    .AddCluster(cluster => cluster
+        .WithBrokers(new[] { builder.Configuration["Kafka:BootstrapServers"]! })
+        .AddConsumer(consumer => consumer
+            .Topic("tarifacoes-realizadas")
+            .WithGroupId("contacorrente-service-group")
+            .WithBufferSize(100)
+            .WithWorkersCount(10)
+            .WithAutoOffsetReset(KafkaFlow.AutoOffsetReset.Earliest)
+            .AddMiddlewares(middlewares => middlewares
+                .AddDeserializer<KafkaFlow.Serializer.JsonCoreDeserializer>()
+                .AddTypedHandlers(handlers => handlers
+                    .AddHandler<TarifacaoRealizadaHandler>()
+                )
+            )
+        )
+    )
+);
 
 var host = Environment.GetEnvironmentVariable("ORACLE_HOST") ?? builder.Configuration.GetValue<string>("ORACLE_HOST");
 var port = Environment.GetEnvironmentVariable("ORACLE_PORT") ?? builder.Configuration.GetValue<string>("ORACLE_PORT"); 
@@ -67,4 +88,9 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
+var kafkaBus = app.Services.CreateKafkaBus();
+await kafkaBus.StartAsync();
+
 app.Run();
+
+await kafkaBus.StopAsync();

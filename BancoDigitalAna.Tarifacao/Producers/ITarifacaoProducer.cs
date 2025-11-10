@@ -1,4 +1,4 @@
-﻿using BancoDigitalAna.Tarifacao.Messages;
+﻿using BancoDigitalAna.BuildingBlocks.Kafka;
 
 namespace BancoDigitalAna.Tarifacao.Producers
 {
