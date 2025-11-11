@@ -1,0 +1,118 @@
+services:
+  # --- Banco API Conta ---
+  contacorrente-db:
+    build: ./BancoDigitalAna.ContaCorrente/Database
+    container_name: contacorrente-db
+    environment:
+      - ORACLE_PASSWORD=oracle
+    ports:
+      - "1521:1521"
+    volumes:
+      - conta-data:/opt/oracle/oradata
+    healthcheck:
+      test: ["CMD", "tnsping", "localhost"]
+      interval: 5s
+      retries: 12
+      start_period: 10s
+
+  # --- API Conta ---
+  contacorrente-api:
+    build:
+      context: .
+      dockerfile: ./BancoDigitalAna.ContaCorrente/Dockerfile
+    container_name: contacorrente-api
+    depends_on:
+      contacorrente-db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ORACLE_HOST=contacorrente-db
+      - Kafka__BootstrapServers=kafka:9092
+    ports:
+      - "5001:8080"
+
+  # --- Banco API Transferência ---
+  transferencia-db:
+    build: ./BancoDigitalAna.Transferencia/Database
+    container_name: transferencia-db
+    environment:
+      - ORACLE_PASSWORD=oracle
+    ports:
+      - "1522:1521"
+    volumes:
+      - transferencia-data:/opt/oracle/oradata
+
+  # --- API Transferência ---
+  transferencia-api:
+    build:
+      context: .
+      dockerfile: ./BancoDigitalAna.Transferencia/Dockerfile
+    container_name: transferencia-api
+    depends_on:
+      - transferencia-db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=User Id=system;Password=oracle;Data Source=transferencia-db:1521/FREE;
+      - ApiContaCorrenteUrl=http://contacorrente-api:8080/api/v1/
+      - Kafka__BootstrapServers=kafka:9092
+    ports:
+      - "5002:8080"
+
+  # --- Banco Serviço Tarifa ---
+  tarifa-db:
+    build: ./BancoDigitalAna.Tarifacao/Database
+    container_name: tarifa-db
+    environment:
+      - ORACLE_PASSWORD=oracle
+    ports:
+      - "1523:1521"
+    volumes:
+      - tarifa-data:/opt/oracle/oradata
+
+  # --- Serviço Tarifa ---
+  tarifa-service:
+    build:
+      context: .
+      dockerfile: ./BancoDigitalAna.Tarifacao/Dockerfile
+    container_name: tarifa-service
+    depends_on:
+      - tarifa-db
+      - kafka
+    environment:
+      - Kafka__BootstrapServers=kafka:9092
+      - ConnectionStrings__DefaultConnection=User Id=system;Password=oracle;Data Source=tarifa-db:1521/FREE;
+
+  # --- Zookeeper ---
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  # --- Kafka ---
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9094
+
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+
+volumes:
+  conta-data:
+  transferencia-data:
+  tarifa-data:

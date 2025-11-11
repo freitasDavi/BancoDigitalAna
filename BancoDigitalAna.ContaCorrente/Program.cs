@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Banco Digital da Ana - Conta Corrente",
-        Description = "Api para criação de contas e movimentação de dinheiro do Banco Digital da Ana",
+        Description = "Api para criaï¿½ï¿½o de contas e movimentaï¿½ï¿½o de dinheiro do Banco Digital da Ana",
         Contact = new Microsoft.OpenApi.Models.OpenApiContact
         {
             Name = "Davi Freitas da Silva",
@@ -30,10 +30,10 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Adicionando Autenticação
+// Adicionando Autenticaï¿½ï¿½o
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
-// Adicionando Serviços base
+// Adicionando Serviï¿½os base
 DependencyInjection.AddCoreServices(builder.Services);
 
 // Adicionando Mediator
@@ -77,7 +77,7 @@ var user = Environment.GetEnvironmentVariable("ORACLE_USER") ?? builder.Configur
 var password = Environment.GetEnvironmentVariable("ORACLE_PASSWORD") ?? builder.Configuration.GetValue<string>("ORACLE_PASSWORD");
 var service = Environment.GetEnvironmentVariable("ORACLE_SERVICE") ?? builder.Configuration.GetValue<string>("ORACLE_SERVICE");
 
-// Conexão com o banco de dados
+// Conexï¿½o com o banco de dados
 builder.Services.AddDbContext<ContaDbContext>(options =>
 {
     var connectionString = $"User Id={user};Password={password};Data Source={host}:{port}/{service}";
