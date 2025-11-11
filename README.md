@@ -2,6 +2,9 @@
 
 Um sistema de banco digital desenvolvido com arquitetura **DDD (Domain-Driven Design)**, **CQRS (Command Query Responsibility Segregation)** e comunicação assíncrona com **Apache Kafka**. O projeto é composto por múltiplos microserviços especializados em diferentes domínios de negócio.
 
+Ps:
+Dois serviços foram desenvolvidos acessando o banco de dados via Dapper e um via Entity Framework, utilizei entity, pois foi-me perguntado sobre meu conhecimento nele e nada sobre Dapper. Então achei melhor demonstrar, apesar de que no teste pedia somente Dapepr.
+
 ## 📋 Índice
 
 - [Visão Geral](#visão-geral)
